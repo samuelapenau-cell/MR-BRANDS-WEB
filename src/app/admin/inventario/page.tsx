@@ -140,7 +140,7 @@ export default function AdminInventario() {
                 <div className="p-4 bg-surface/50 border-b border-border flex items-center gap-3">
                   <div className="w-10 h-10 rounded-sm bg-surface flex-shrink-0 overflow-hidden">
                     {group.productImage && (
-                      <Image src={group.productImage} alt="" width={40} height={40} className="w-full h-full object-cover" />
+                      <Image src={group.productImage} alt={group.productName} width={40} height={40} className="w-full h-full object-cover" />
                     )}
                   </div>
                   <div className="flex-1">

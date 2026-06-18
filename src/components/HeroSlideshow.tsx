@@ -18,8 +18,9 @@ export function HeroSlideshow() {
               className="hero-slideshow-img"
               priority={i < 3}
               loading={i < 3 ? undefined : "lazy"}
-              quality={75}
+              quality={i === 0 ? 60 : 75}
               sizes="360px"
+              fetchPriority={i === 0 ? "high" : undefined}
             />
           </div>
         ))}

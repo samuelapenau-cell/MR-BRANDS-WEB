@@ -47,6 +47,7 @@ export const metadata: Metadata = {
     "MR.BRANDS",
     "tienda multimarca Venezuela",
   ],
+  alternates: { canonical: SITE_URL },
   openGraph: {
     title: "MR.BRANDS | La Casa del Flow",
     description: "Tienda multimarca streetwear en Maracay, Venezuela.",
@@ -54,6 +55,7 @@ export const metadata: Metadata = {
     locale: "es_VE",
     type: "website",
     url: SITE_URL,
+    images: [{ url: `${SITE_URL}/logo.png`, width: 512, height: 512 }],
   },
   robots: { index: true, follow: true },
 };

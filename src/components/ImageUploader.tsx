@@ -43,7 +43,7 @@ export function ImageUploader({ images, onImagesChange, maxImages = 5 }: ImageUp
       <div className="flex flex-wrap gap-2 mb-2">
         {images.map((url, i) => (
           <div key={i} className="relative w-20 h-20 rounded-sm overflow-hidden border border-border group">
-            <Image src={url} alt="" width={80} height={80} className="w-full h-full object-cover" />
+            <Image src={url} alt="Vista previa de imagen" width={80} height={80} className="w-full h-full object-cover" />
             <button
               type="button"
               onClick={() => removeImage(i)}

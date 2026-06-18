@@ -262,7 +262,7 @@ export default function AdminProductos() {
                             {product.images[0] && (
                               <Image
                                 src={product.images[0]}
-                                alt=""
+                                alt={product.name}
                                 width={40}
                                 height={40}
                                 className="w-full h-full object-cover"

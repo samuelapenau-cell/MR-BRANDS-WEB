@@ -242,7 +242,7 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                     }`}
                   >
                     <div className="relative w-full h-full">
-                      <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                      <Image src={img} alt={`${product.name} vista ${i + 1}`} fill className="object-cover" sizes="80px" />
                     </div>
                   </button>
                 ))}
