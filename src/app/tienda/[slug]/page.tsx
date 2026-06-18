@@ -1,0 +1,95 @@
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+import ProductContent from "./ProductContent";
+import type { Product } from "@/types";
+
+type Props = { params: Promise<{ slug: string }> };
+
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { data: products } = await supabase
+      .from("products")
+      .select("slug")
+      .eq("active", true);
+
+    return (products || []).map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { data: products } = await supabase
+      .from("products")
+      .select("name, description, images")
+      .eq("slug", slug)
+      .single();
+
+    if (products) {
+      return {
+        title: `${products.name} | MR.BRANDS Tienda`,
+        description: products.description?.slice(0, 160) || `${products.name} en MR.BRANDS.`,
+        openGraph: {
+          title: `${products.name} | MR.BRANDS`,
+          description: products.description?.slice(0, 160),
+          images: products.images?.[0] ? [{ url: products.images[0] }] : [],
+        },
+      };
+    }
+  } catch {
+    // fallback below
+  }
+
+  return {
+    title: "Producto | MR.BRANDS Tienda",
+    description: "Explora nuestros productos streetwear en Maracay.",
+  };
+}
+
+export default async function ProductPage({ params }: Props) {
+  const { slug } = await params;
+
+  const supabase = await createServerSupabaseClient();
+  const { data: products } = await supabase
+    .from("products")
+    .select("*, category:categories(*), variants:product_variants(*)")
+    .eq("slug", slug)
+    .eq("active", true)
+    .limit(1)
+    .single();
+
+  const jsonLd = products ? {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: products.name,
+    description: products.description?.slice(0, 200),
+    image: products.images?.[0] || undefined,
+    offers: {
+      "@type": "Offer",
+      price: Number(products.price),
+      priceCurrency: "USD",
+      availability: products.variants?.some((v: any) => v.stock > 0)
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+    },
+  } : null;
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      <ProductContent product={products || null} slug={slug} />
+    </>
+  );
+}
