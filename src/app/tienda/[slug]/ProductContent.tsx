@@ -6,9 +6,6 @@ import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
 import { useAuth } from "@/components/AuthProvider";
 import { useToastStore } from "@/lib/stores/toast-store";
-import { WishlistButton } from "@/components/WishlistButton";
-import { SizeChart } from "@/components/SizeChart";
-import { ImageLightbox } from "@/components/ImageLightbox";
 import { STORE } from "@/lib/constants";
 import type { Product } from "@/types";
 
@@ -110,7 +107,7 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
     setQty(1);
     setAddedFeedback(true);
     if (!user) {
-      addToast("Iniciá sesión o creá una cuenta para guardar tu carrito", "info");
+      addToast("Inicia sesion o crea una cuenta para guardar tu carrito", "info");
     }
   }, [product, selectedVariant, qty, addItem, user, addToast]);
 
@@ -169,13 +166,12 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
   const totalStock = product.variants.reduce((s, v) => s + v.stock, 0);
 
   const whatsappLink = "https://wa.me/" + STORE.whatsapp + "?text=" + encodeURIComponent(
-    "Hola! Me interesa:\n\n*" + product.name + "*\nTalla: " + (variant?.size || "") + "\nColor: " + (variant?.color || "") + "\nPrecio: $" + product.price.toFixed(2) + "\n\n¿Está disponible?"
+    "Hola! Me interesa:\n\n*" + product.name + "*\nTalla: " + (variant?.size || "") + "\nColor: " + (variant?.color || "") + "\nPrecio: $" + product.price.toFixed(2) + "\n\nEsta disponible?"
   );
 
   return (
     <div className="pt-24 pb-16 px-6">
       <div className="max-w-[1400px] mx-auto">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-2.5 text-[10px] font-mono text-offwhite/25 mb-10 flex-wrap">
           <Link href="/" className="hover:text-offwhite/50 transition-colors">Inicio</Link>
           <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
@@ -185,12 +181,8 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-          {/* Image Section */}
           <div>
-            <div
-              className="aspect-[4/5] bg-surface border border-border/50 overflow-hidden relative group cursor-zoom-in"
-              onClick={() => setLightboxOpen(true)}
-            >
+            <div className="aspect-[4/5] bg-surface border border-border/50 overflow-hidden relative group cursor-zoom-in">
               {product.images[selectedImage] ? (
                 <Image
                   src={product.images[selectedImage]}
@@ -215,47 +207,12 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
               )}
               {stock > 0 && stock <= 3 && (
                 <div className="urban-badge urban-badge-lowstock absolute top-4 left-4 z-10">
-                  Últimas {stock}
+                  Ultimas {stock}
                 </div>
               )}
-
-              <div className="absolute top-4 right-4 z-10">
-                <WishlistButton
-                  product={{
-                    id: product.id,
-                    name: product.name,
-                    slug: product.slug,
-                    price: product.price,
-                    image: product.images[0] || "",
-                  }}
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-all"
-                />
-              </div>
             </div>
-
-            {/* Thumbnails */}
-            {product.images.length > 1 && (
-              <div className="flex gap-2 mt-3 overflow-x-auto urban-scrollbar pb-1">
-                {product.images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={`w-16 h-16 md:w-20 md:h-20 flex-shrink-0 overflow-hidden border transition-all duration-200 ${
-                      selectedImage === i
-                        ? "border-gold"
-                        : "border-border/40 hover:border-offwhite/30"
-                    }`}
-                  >
-                    <div className="relative w-full h-full">
-                      <Image src={img} alt={`${product.name} vista ${i + 1}`} fill className="object-cover" sizes="80px" />
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Info Section */}
           <div className="flex flex-col">
             <span className="text-[10px] font-mono uppercase tracking-[2.5px] text-gold/60">
               {product.category?.name || "Producto"}
@@ -276,12 +233,10 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
             </div>
 
             <div className="mt-6 h-px bg-border/30" />
-
             <p className="mt-6 text-sm text-offwhite/45 font-body leading-relaxed whitespace-pre-line">
-              {product.description || "Descripción próximamente."}
+              {product.description || "Descripcion proximamente."}
             </p>
 
-            {/* Color Selector */}
             {uniqueColors.length > 1 && (
               <div className="mt-8">
                 <h3 className="text-[10px] font-mono uppercase tracking-[2px] text-gold/60 mb-3 flex items-center gap-2">
@@ -310,7 +265,6 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
               </div>
             )}
 
-            {/* Size Selector */}
             {sizesForColor.length > 1 && (
               <div className="mt-6">
                 <h3 className="text-[10px] font-mono uppercase tracking-[2px] text-gold/60 mb-3 flex items-center gap-2">
@@ -318,7 +272,6 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                   <span className="text-offwhite/40 text-[10px] tracking-normal normal-case font-body">
                     {variant?.size || "Seleccionar"}
                   </span>
-                  <SizeChart categorySlug={product.category?.slug} />
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {sizesForColor.map((v) => {
@@ -338,29 +291,19 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
               </div>
             )}
 
-            {/* Add to Cart */}
             <div className="mt-8 flex items-center gap-3">
               {stock > 0 ? (
                 <>
                   <div className="flex items-center border border-border/40 rounded-sm">
-                    <button
-                      onClick={() => setQty(Math.max(1, qty - 1))}
-                      className="w-10 h-10 flex items-center justify-center text-offwhite/40 hover:text-offwhite hover:bg-gold/5 transition-all"
-                    >
+                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 flex items-center justify-center text-offwhite/40 hover:text-offwhite hover:bg-gold/5 transition-all">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                     </button>
                     <span className="w-10 text-center text-sm font-mono text-offwhite/80 tabular-nums">{qty}</span>
-                    <button
-                      onClick={() => setQty(Math.min(stock, qty + 1))}
-                      className="w-10 h-10 flex items-center justify-center text-offwhite/40 hover:text-offwhite hover:bg-gold/5 transition-all"
-                    >
+                    <button onClick={() => setQty(Math.min(stock, qty + 1))} className="w-10 h-10 flex items-center justify-center text-offwhite/40 hover:text-offwhite hover:bg-gold/5 transition-all">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                     </button>
                   </div>
-                  <button
-                    onClick={handleAddToCart}
-                    className="urban-add-cart-pop flex-1 py-3.5 bg-gold text-black font-display text-base tracking-[2px] text-center rounded-sm hover:bg-gold-light transition-all duration-300 active:scale-[0.98] relative overflow-hidden group"
-                  >
+                  <button onClick={handleAddToCart} className="urban-add-cart-pop flex-1 py-3.5 bg-gold text-black font-display text-base tracking-[2px] text-center rounded-sm hover:bg-gold-light transition-all duration-300 active:scale-[0.98] relative overflow-hidden group">
                     <span className={`transition-all duration-300 flex items-center justify-center gap-2 ${addedFeedback ? "opacity-0 scale-75" : "opacity-100 scale-100"}`}>
                       {inCart ? "Agregar otro" : "Agregar al carrito"}
                       <span className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
@@ -374,17 +317,12 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
-                      ¡Agregado!
+                      Agregado!
                     </span>
                   </button>
                 </>
               ) : (
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3.5 border border-gold/30 text-gold font-display text-base tracking-[2px] text-center rounded-sm hover:bg-gold/10 transition-all duration-300 flex items-center justify-center gap-2 group"
-                >
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="w-full py-3.5 border border-gold/30 text-gold font-display text-base tracking-[2px] text-center rounded-sm hover:bg-gold/10 transition-all duration-300 flex items-center justify-center gap-2 group">
                   Consultar disponibilidad
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
                     <path d="M7 17L17 7" /><polyline points="7 7 17 7 17 17" />
@@ -399,14 +337,13 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
               </p>
             )}
 
-            {/* Shipping Info */}
             <div className="mt-10 pt-8 border-t border-border/30 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex items-start gap-3">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-gold/40 mt-0.5 flex-shrink-0">
                   <rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
                 </svg>
                 <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/50">Envíos</p>
+                  <p className="text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/50">Envios</p>
                   <p className="text-xs text-offwhite/30 font-body mt-0.5">A todo Venezuela</p>
                 </div>
               </div>
@@ -425,23 +362,20 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                 </svg>
                 <div>
                   <p className="text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/50">Cambios</p>
-                  <p className="text-xs text-offwhite/30 font-body mt-0.5">Hasta 7 días</p>
+                  <p className="text-xs text-offwhite/30 font-body mt-0.5">Hasta 7 dias</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Reviews */}
         <div className="mt-20 pt-12 border-t border-border/20">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="font-display text-2xl md:text-3xl text-offwhite tracking-[1px]">
-                Reseñas
-              </h2>
+              <h2 className="font-display text-2xl md:text-3xl text-offwhite tracking-[1px]">Resenas</h2>
               {(product.review_count ?? 0) > 0 && (
                 <p className="text-xs font-mono text-offwhite/25 mt-2 flex items-center gap-2">
-                  <span>{product.review_count} {product.review_count === 1 ? "opinión" : "opiniones"}</span>
+                  <span>{product.review_count} {product.review_count === 1 ? "opinion" : "opiniones"}</span>
                   <span className="text-offwhite/10">·</span>
                   <span className="flex items-center gap-1">
                     {product.avg_rating ?? 0}
@@ -450,17 +384,9 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                 </p>
               )}
             </div>
-            <button
-              onClick={() => setReviewFormOpen(!reviewFormOpen)}
-              className="text-[10px] font-mono uppercase tracking-[2px] px-5 py-2.5 border border-gold/25 text-gold/80 rounded-sm hover:bg-gold/10 hover:text-gold transition-all flex items-center gap-2"
-            >
-              {reviewFormOpen ? (
-                <>Cancelar</>
-              ) : (
-                <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                  Escribir reseña
-                </>
+            <button onClick={() => setReviewFormOpen(!reviewFormOpen)} className="text-[10px] font-mono uppercase tracking-[2px] px-5 py-2.5 border border-gold/25 text-gold/80 rounded-sm hover:bg-gold/10 hover:text-gold transition-all flex items-center gap-2">
+              {reviewFormOpen ? (<>Cancelar</>) : (
+                <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>Escribir resena</>
               )}
             </button>
           </div>
@@ -469,55 +395,24 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
             <form onSubmit={submitReview} className="mb-10 p-6 bg-surface/60 border border-border/20 rounded-sm space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">
-                    Tu nombre
-                  </label>
-                  <input
-                    type="text"
-                    value={reviewName}
-                    onChange={(e) => setReviewName(e.target.value)}
-                    placeholder="Nombre"
-                    className="w-full px-3 py-2.5 bg-surface/80 border border-border/30 rounded-sm text-sm text-offwhite/70 placeholder:text-offwhite/15 focus:border-gold/40 focus:outline-none transition-colors"
-                  />
+                  <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">Tu nombre</label>
+                  <input type="text" value={reviewName} onChange={(e) => setReviewName(e.target.value)} placeholder="Nombre" className="w-full px-3 py-2.5 bg-surface/80 border border-border/30 rounded-sm text-sm text-offwhite/70 placeholder:text-offwhite/15 focus:border-gold/40 focus:outline-none transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">
-                    Puntaje
-                  </label>
+                  <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">Puntaje</label>
                   <div className="flex gap-1.5">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setReviewRating(star)}
-                        className={`w-9 h-9 flex items-center justify-center text-base rounded-sm transition-all ${
-                          star <= reviewRating ? "text-gold scale-110" : "text-offwhite/15 hover:text-offwhite/30"
-                        }`}
-                      >
-                        ★
-                      </button>
+                      <button key={star} type="button" onClick={() => setReviewRating(star)} className={`w-9 h-9 flex items-center justify-center text-base rounded-sm transition-all ${star <= reviewRating ? "text-gold scale-110" : "text-offwhite/15 hover:text-offwhite/30"}`}>★</button>
                     ))}
                   </div>
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">
-                  Comentario <span className="text-offwhite/15 normal-case tracking-normal font-body">(opcional)</span>
-                </label>
-                <textarea
-                  value={reviewComment}
-                  onChange={(e) => setReviewComment(e.target.value)}
-                  placeholder="¿Qué tal el producto?"
-                  rows={2}
-                  className="w-full px-3 py-2.5 bg-surface/80 border border-border/30 rounded-sm text-sm text-offwhite/70 placeholder:text-offwhite/15 focus:border-gold/40 focus:outline-none transition-colors resize-none"
-                />
+                <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">Comentario <span className="text-offwhite/15 normal-case tracking-normal font-body">(opcional)</span></label>
+                <textarea value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} placeholder="Que tal el producto?" rows={2} className="w-full px-3 py-2.5 bg-surface/80 border border-border/30 rounded-sm text-sm text-offwhite/70 placeholder:text-offwhite/15 focus:border-gold/40 focus:outline-none transition-colors resize-none" />
               </div>
-              <button
-                type="submit"
-                disabled={reviewLoading || !reviewName.trim()}
-                className="px-6 py-2.5 bg-gold text-black font-display text-sm tracking-[2px] rounded-sm hover:bg-gold-light disabled:opacity-40 transition-all"
-              >
-                {reviewLoading ? "Enviando..." : "Publicar reseña"}
+              <button type="submit" disabled={reviewLoading || !reviewName.trim()} className="px-6 py-2.5 bg-gold text-black font-display text-sm tracking-[2px] rounded-sm hover:bg-gold-light disabled:opacity-40 transition-all">
+                {reviewLoading ? "Enviando..." : "Publicar resena"}
               </button>
             </form>
           )}
@@ -527,9 +422,7 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mx-auto text-offwhite/10 mb-4">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
-              <p className="text-sm text-offwhite/25 font-body">
-                No hay reseñas aún. Sé el primero en opinar.
-              </p>
+              <p className="text-sm text-offwhite/25 font-body">No hay resenas aun. Se el primero en opinar.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -537,35 +430,20 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                 <div key={review.id} className="urban-review-card p-5 rounded-sm">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-body text-offwhite/70">{review.author_name}</span>
-                    <span className="text-[10px] text-offwhite/20 font-mono">
-                      {new Date(review.created_at).toLocaleDateString("es-ES")}
-                    </span>
+                    <span className="text-[10px] text-offwhite/20 font-mono">{new Date(review.created_at).toLocaleDateString("es-ES")}</span>
                   </div>
                   <div className="flex gap-0.5 mb-3">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star} className={`text-xs ${star <= review.rating ? "text-gold" : "text-offwhite/8"}`}>
-                        ★
-                      </span>
+                      <span key={star} className={`text-xs ${star <= review.rating ? "text-gold" : "text-offwhite/8"}`}>★</span>
                     ))}
                   </div>
-                  {review.comment && (
-                    <p className="text-xs text-offwhite/40 leading-relaxed font-body">{review.comment}</p>
-                  )}
+                  {review.comment && <p className="text-xs text-offwhite/40 leading-relaxed font-body">{review.comment}</p>}
                 </div>
               ))}
             </div>
           )}
         </div>
       </div>
-
-      {lightboxOpen && product?.images && (
-        <ImageLightbox
-          images={product.images}
-          initialIndex={selectedImage}
-          productName={product.name}
-          onClose={() => setLightboxOpen(false)}
-        />
-      )}
     </div>
   );
 }
