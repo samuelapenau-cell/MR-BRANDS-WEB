@@ -7,6 +7,7 @@ import { useCart } from "@/components/CartProvider";
 import { useAuth } from "@/components/AuthProvider";
 import { useToastStore } from "@/lib/stores/toast-store";
 import { WishlistButton } from "@/components/WishlistButton";
+import { SizeChart } from "@/components/SizeChart";
 import { STORE } from "@/lib/constants";
 import type { Product } from "@/types";
 
