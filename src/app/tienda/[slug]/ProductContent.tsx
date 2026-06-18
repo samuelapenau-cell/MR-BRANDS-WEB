@@ -230,6 +230,26 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                 />
               </div>
             </div>
+
+            {product.images.length > 1 && (
+              <div className="flex gap-2 mt-3 overflow-x-auto urban-scrollbar pb-1">
+                {product.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedImage(i)}
+                    className={`w-16 h-16 md:w-20 md:h-20 flex-shrink-0 overflow-hidden border transition-all duration-200 ${
+                      selectedImage === i
+                        ? "border-gold"
+                        : "border-border/40 hover:border-offwhite/30"
+                    }`}
+                  >
+                    <div className="relative w-full h-full">
+                      <Image src={img} alt={`${product.name} vista ${i + 1}`} fill className="object-cover" sizes="80px" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col">
@@ -424,29 +444,9 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button key={star} type="button" onClick={() => setReviewRating(star)} className={`w-9 h-9 flex items-center justify-center text-base rounded-sm transition-all ${star <= reviewRating ? "text-gold scale-110" : "text-offwhite/15 hover:text-offwhite/30"}`}>★</button>
                     ))}
-            </div>
-
-            {product.images.length > 1 && (
-              <div className="flex gap-2 mt-3 overflow-x-auto urban-scrollbar pb-1">
-                {product.images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={`w-16 h-16 md:w-20 md:h-20 flex-shrink-0 overflow-hidden border transition-all duration-200 ${
-                      selectedImage === i
-                        ? "border-gold"
-                        : "border-border/40 hover:border-offwhite/30"
-                    }`}
-                  >
-                    <div className="relative w-full h-full">
-                      <Image src={img} alt={`${product.name} vista ${i + 1}`} fill className="object-cover" sizes="80px" />
                     </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-              </div>
+                  </div>
+                </div>
               <div>
                 <label className="block text-[10px] font-mono uppercase tracking-[1.5px] text-offwhite/30 mb-1.5">Comentario <span className="text-offwhite/15 normal-case tracking-normal font-body">(opcional)</span></label>
                 <textarea value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} placeholder="Que tal el producto?" rows={2} className="w-full px-3 py-2.5 bg-surface/80 border border-border/30 rounded-sm text-sm text-offwhite/70 placeholder:text-offwhite/15 focus:border-gold/40 focus:outline-none transition-colors resize-none" />
