@@ -130,7 +130,7 @@ export function SizeChart({ categorySlug }: { categorySlug?: string }) {
             </div>
 
             <div className="mt-6 pt-4 border-t border-border/10 text-center">
-              <p className="text-[10px] font-mono text-offwhite/20">Si tenés dudas, consultanos por <a href={`https://wa.me/584122934158`} target="_blank" rel="noopener noreferrer" className="text-gold/60 hover:text-gold transition-colors">WhatsApp</a></p>
+              <p className="text-[10px] font-mono text-offwhite/20">Si tienes dudas, contáctanos por <a href={`https://wa.me/584122934158`} target="_blank" rel="noopener noreferrer" className="text-gold/60 hover:text-gold transition-colors">WhatsApp</a></p>
             </div>
           </div>
         </div>

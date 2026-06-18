@@ -17,7 +17,7 @@ export default function OfflinePage() {
         </div>
         <h1 className="font-display text-4xl text-offwhite tracking-[1px] mb-3">Sin conexión</h1>
         <p className="text-sm text-offwhite/40 font-body leading-relaxed">
-          Parece que no tenés internet. Revisá tu conexión y volvé a intentar.
+          Parece que no tienes internet. Revisa tu conexión y vuelve a intentarlo.
         </p>
         <button
           onClick={() => window.location.reload()}

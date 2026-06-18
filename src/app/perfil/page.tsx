@@ -214,7 +214,7 @@ export default function PerfilPage() {
                     <polyline points="14 2 14 8 20 8" />
                   </svg>
                 </div>
-                <p className="text-offwhite/40 text-sm font-body mb-1">Todavía no tenés pedidos</p>
+                <p className="text-offwhite/40 text-sm font-body mb-1">Todavía no tienes pedidos</p>
                 <p className="text-offwhite/20 text-xs font-mono mb-6">Hacé tu primera compra en la tienda</p>
                 <Link
                   href="/tienda"

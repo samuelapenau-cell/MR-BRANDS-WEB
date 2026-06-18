@@ -11,7 +11,7 @@ export default function NotFound() {
           Página no <span className="text-gold">encontrada</span>
         </h1>
         <p className="mt-6 text-sm text-offwhite/40 font-body leading-relaxed">
-          Esta página no existe o fue movida. Revisá el link o volvé al inicio.
+          Esta página no existe o fue movida. Revisa el link o vuelve al inicio.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link

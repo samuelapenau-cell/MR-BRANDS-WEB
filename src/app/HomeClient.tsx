@@ -226,7 +226,7 @@ export function HomeClient({ featured: initialFeatured, categories: initialCateg
           <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #C9A84C 0%, transparent 60%)" }} />
           <div className="relative z-10 max-w-[800px] mx-auto text-center">
             <span className="text-[10px] font-mono uppercase tracking-[2.5px] text-gold">¿Listo para el flow?</span>
-            <h2 className="mt-4 font-display text-4xl md:text-7xl text-offwhite tracking-[2px] leading-none">Visitános o pedí<br /><span className="text-gold">desde casa</span></h2>
+            <h2 className="mt-4 font-display text-4xl md:text-7xl text-offwhite tracking-[2px] leading-none">Visítanos o pide<br /><span className="text-gold">desde casa</span></h2>
             <p className="mt-6 text-sm text-offwhite/40 font-body max-w-[450px] mx-auto leading-relaxed">Hace tu pedido online y retirá por nuestra tienda en Maracay, o recibilo donde estés con nuestro delivery.</p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/tienda" className="px-8 py-4 bg-gold text-black font-display text-lg tracking-[2px] rounded-sm hover:bg-gold-light transition-all duration-300 active:scale-[0.98]">Comprar ahora</Link>

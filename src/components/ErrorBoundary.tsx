@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
               Algo salió <span className="text-accent">mal</span>
             </h1>
             <p className="mt-6 text-sm text-offwhite/40 font-body leading-relaxed">
-              Ocurrió un error inesperado. Recargá la página o volvé a intentar.
+              Ocurrió un error inesperado. Recarga la página o vuelve a intentarlo.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
