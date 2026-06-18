@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       .from("products")
       .select("name, description, images")
       .eq("slug", slug)
-      .single();
+      .maybeSingle();
 
     if (products) {
       return {
@@ -56,14 +56,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
 
-  const supabase = await createServerSupabaseClient();
-  const { data: products } = await supabase
-    .from("products")
-    .select("*, category:categories(*), variants:product_variants(*)")
-    .eq("slug", slug)
-    .eq("active", true)
-    .limit(1)
-    .single();
+  let products: Product | null = null;
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { data } = await supabase
+      .from("products")
+      .select("*, category:categories(*), variants:product_variants(*)")
+      .eq("slug", slug)
+      .eq("active", true)
+      .limit(1)
+      .maybeSingle();
+    products = data;
+  } catch {
+    products = null;
+  }
 
   const jsonLd = products ? {
     "@context": "https://schema.org",
@@ -89,7 +95,7 @@ export default async function ProductPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
-      <ProductContent product={products || null} slug={slug} />
+      <ProductContent product={products} slug={slug} />
     </>
   );
 }
