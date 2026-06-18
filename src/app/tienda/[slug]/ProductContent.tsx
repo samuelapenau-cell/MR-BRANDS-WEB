@@ -287,6 +287,7 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                   <span className="text-offwhite/40 text-[10px] tracking-normal normal-case font-body">
                     {variant?.size || "Seleccionar"}
                   </span>
+                  <SizeChart categorySlug={product.category?.slug} />
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {sizesForColor.map((v) => {
