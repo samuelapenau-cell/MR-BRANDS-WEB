@@ -8,6 +8,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { useToastStore } from "@/lib/stores/toast-store";
 import { WishlistButton } from "@/components/WishlistButton";
 import { SizeChart } from "@/components/SizeChart";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import { STORE } from "@/lib/constants";
 import type { Product } from "@/types";
 
@@ -35,6 +36,7 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [addedFeedback, setAddedFeedback] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     if (initialProduct) return;
@@ -185,7 +187,10 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           {/* Image Section */}
           <div>
-            <div className="aspect-[4/5] bg-surface border border-border/50 overflow-hidden relative group">
+            <div
+              className="aspect-[4/5] bg-surface border border-border/50 overflow-hidden relative group cursor-zoom-in"
+              onClick={() => setLightboxOpen(true)}
+            >
               {product.images[selectedImage] ? (
                 <Image
                   src={product.images[selectedImage]}
@@ -552,6 +557,15 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
           )}
         </div>
       </div>
+
+      {lightboxOpen && product?.images && (
+        <ImageLightbox
+          images={product.images}
+          initialIndex={selectedImage}
+          productName={product.name}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }
