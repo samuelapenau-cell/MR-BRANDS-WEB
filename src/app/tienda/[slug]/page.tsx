@@ -1,62 +1,32 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
-import ProductContent from "./ProductContent";
-import type { Product } from "@/types";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const revalidate = 60;
-
-export async function generateStaticParams() {
-  try {
-    const supabase = await createServerSupabaseClient();
-    const { data: products } = await supabase
-      .from("products")
-      .select("slug")
-      .eq("active", true);
-
-    return (products || []).map((p) => ({ slug: p.slug }));
-  } catch {
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-
   try {
     const supabase = await createServerSupabaseClient();
     const { data: products } = await supabase
       .from("products")
-      .select("name, description, images")
+      .select("name")
       .eq("slug", slug)
       .maybeSingle();
-
     if (products) {
-      return {
-        title: `${products.name} | MR.BRANDS Tienda`,
-        description: products.description?.slice(0, 160) || `${products.name} en MR.BRANDS.`,
-        openGraph: {
-          title: `${products.name} | MR.BRANDS`,
-          description: products.description?.slice(0, 160),
-          images: products.images?.[0] ? [{ url: products.images[0] }] : [],
-        },
-      };
+      return { title: `${products.name} | MR.BRANDS Tienda` };
     }
-  } catch {
-    // fallback below
-  }
-
-  return {
-    title: "Producto | MR.BRANDS Tienda",
-    description: "Explora nuestros productos streetwear en Maracay.",
-  };
+  } catch {}
+  return { title: "Producto | MR.BRANDS Tienda" };
 }
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
+  let name = "no encontrado";
+  let price = 0;
+  let images: string[] = [];
 
-  let products: Product | null = null;
   try {
     const supabase = await createServerSupabaseClient();
     const { data } = await supabase
@@ -66,36 +36,20 @@ export default async function ProductPage({ params }: Props) {
       .eq("active", true)
       .limit(1)
       .maybeSingle();
-    products = data;
-  } catch {
-    products = null;
-  }
-
-  const jsonLd = products ? {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: products.name,
-    description: products.description?.slice(0, 200),
-    image: products.images?.[0] || undefined,
-    offers: {
-      "@type": "Offer",
-      price: Number(products.price),
-      priceCurrency: "USD",
-      availability: products.variants?.some((v: any) => v.stock > 0)
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-    },
-  } : null;
+    if (data) {
+      name = data.name;
+      price = data.price;
+      images = data.images || [];
+    }
+  } catch {}
 
   return (
-    <>
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
-      <ProductContent product={products} slug={slug} />
-    </>
+    <div className="pt-24 pb-16 px-6">
+      <div className="max-w-[1400px] mx-auto text-center py-24">
+        <h1 className="font-display text-6xl text-offwhite">{name}</h1>
+        <p className="text-gold text-2xl mt-4">${price.toFixed(2)}</p>
+        <p className="text-offwhite/40 mt-2">{images.length} imagen(es)</p>
+      </div>
+    </div>
   );
 }
