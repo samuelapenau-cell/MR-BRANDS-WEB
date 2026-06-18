@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
 import { useAuth } from "@/components/AuthProvider";
 import { useToastStore } from "@/lib/stores/toast-store";
+import { WishlistButton } from "@/components/WishlistButton";
 import { STORE } from "@/lib/constants";
 import type { Product } from "@/types";
 
@@ -210,6 +211,19 @@ export default function ProductContent({ product: initialProduct, slug }: { prod
                   Ultimas {stock}
                 </div>
               )}
+
+              <div className="absolute top-4 right-4 z-10">
+                <WishlistButton
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    slug: product.slug,
+                    price: product.price,
+                    image: product.images[0] || "",
+                  }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-all"
+                />
+              </div>
             </div>
           </div>
 
